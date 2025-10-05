@@ -12,16 +12,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Cache dependencies (example: pip)
       - name: Cache dependencies
         id: cache-deps
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: cache-f2815ea
-          restore-keys: |
 
-      # Prime cache step
       - name: prime-cache-f2815ea
         run: |
           if [ "${{ steps.cache-deps.outputs.cache-hit }}" == "true" ]; then
