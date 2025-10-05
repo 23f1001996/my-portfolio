@@ -9,13 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repo
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Step 2: Cache dependencies (example: Python pip cache)
+      # Step 2: Cache dependencies (Python pip example)
       - name: Cache dependencies
-        id: cache-deps
+        id: cache-deps   # ✅ must have an ID to reference outputs
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -24,6 +24,7 @@ jobs:
       # Step 3: Prime the cache
       - name: prime-cache-f2815ea
         run: |
+          echo "Cache hit? ${{ steps.cache-deps.outputs.cache-hit }}"
           if [ "${{ steps.cache-deps.outputs.cache-hit }}" == "true" ]; then
             echo "Cache hit!"
           else
