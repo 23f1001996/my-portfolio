@@ -1,31 +1,31 @@
-name: CI with Cache
+name: Cache CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      # Step 1: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js (or Python, etc.)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      # 🔹 Cache dependencies
-      - name: Prime cache for cache-f2815ea
-        id: prime-cache-f2815ea
+      # Step 2: Cache dependencies (example: Python pip cache)
+      - name: Cache dependencies
+        id: cache-deps
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.npm
-            node_modules
+          path: ~/.cache/pip
           key: cache-f2815ea
-      - name: Show cache result
-        run: echo "Cache hit? ${{ steps.prime-cache-f2815ea.outputs.cache-hit }}"
+
+      # Step 3: Prime the cache
+      - name: prime-cache-f2815ea
+        run: |
+          if [ "${{ steps.cache-deps.outputs.cache-hit }}" == "true" ]; then
+            echo "Cache hit!"
+          else
+            echo "Cache miss!"
+          fi
